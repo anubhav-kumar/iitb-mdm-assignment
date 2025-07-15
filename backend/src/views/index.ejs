@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Drone Telemetry Viewer</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 1rem;
+      background: #f9f9f9;
+    }
+    #log {
+      white-space: pre-wrap;
+      background: #fff;
+      padding: 1rem;
+      border: 1px solid #ccc;
+      height: 400px;
+      overflow-y: auto;
+    }
+    .msg {
+      margin-bottom: 0.5rem;
+      padding: 0.5rem;
+      border-bottom: 1px solid #eee;
+    }
+  </style>
+</head>
+<body>
+  <h2>Live Drone Telemetry</h2>
+  <div id="log"></div>
+
+  <script>
+    const socket = new WebSocket('ws://localhost:3000');
+    const log = document.getElementById('log');
+
+    socket.onopen = () => {
+      const div = document.createElement('div');
+      div.className = 'msg';
+      div.textContent = 'WebSocket connected.';
+      log.appendChild(div);
+    };
+
+    socket.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      const div = document.createElement('div');
+      div.className = 'msg';
+      div.textContent = `[${new Date().toLocaleTimeString()}] ${JSON.stringify(data)}`;
+      log.appendChild(div);
+      log.scrollTop = log.scrollHeight;
+    };
+
+    socket.onclose = () => {
+      const div = document.createElement('div');
+      div.className = 'msg';
+      div.textContent = 'WebSocket disconnected.';
+      log.appendChild(div);
+    };
+
+    socket.onerror = (err) => {
+      const div = document.createElement('div');
+      div.className = 'msg';
+      div.textContent = `Error: ${err.message}`;
+      log.appendChild(div);
+    };
+  </script>
+</body>
+</html>
