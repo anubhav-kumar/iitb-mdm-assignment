@@ -1,1 +1,1 @@
-print("Git script testing successful")
+print("Git script testing successful changes")
