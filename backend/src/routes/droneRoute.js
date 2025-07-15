@@ -56,6 +56,10 @@ router.post('/complete-mission', async(req, res) => {
       droneMissionId,
       { status: 'successful', completedAt: currentTimestamp },
     );
+    await Drone.findByIdAndUpdate(
+      droneMission.droneId,
+      { status: 'idle', currentMissionId: null },
+    );
     return res.status(200).json({ droneMissionId: droneMission._id });
   } catch (err) {
     console.error('Error starting mission:', err);

@@ -62,6 +62,7 @@ describe('Drone + Mission API Tests', () => {
 
     expect(res.statusCode).toBe(200);
     expect(res.body).toHaveProperty('status');
+    expect(res.body.status).toBe('flying');
     expect(res.body.drone).toHaveProperty('_id');
   });
 
@@ -86,5 +87,14 @@ describe('Drone + Mission API Tests', () => {
 
     expect(res.statusCode).toBe(200);
     expect(res.body).toHaveProperty('droneMissionId');
+  });
+
+  test('GET /status should return updated drone status', async() => {
+    const res = await request(app)
+      .get(`/status?droneId=${testDrone._id}`);
+    expect(res.statusCode).toBe(200);
+    expect(res.body).toHaveProperty('status');
+    expect(res.body.status).toBe('idle');
+    expect(res.body.drone).toHaveProperty('_id');
   });
 });
