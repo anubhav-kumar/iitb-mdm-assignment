@@ -12,7 +12,7 @@ const sampleWaypoints = () => [
   { latitude: 28.5355, longitude: 77.3910, altitude: 200 },
 ];
 
-const seed = async () => {
+const seed = async() => {
   await connectDB();
 
   console.log('🔥 Clearing existing data...');
@@ -20,7 +20,7 @@ const seed = async () => {
   await Mission.deleteMany({});
 
   console.log('🚁 Creating drones...');
-  const drones = await Drone.insertMany([
+  await Drone.insertMany([
     { name: 'Alpha', status: 'idle', battery: 90, latitude: 28.61, longitude: 77.20, altitude: 0 },
     { name: 'Bravo', status: 'idle', battery: 50, latitude: 28.70, longitude: 77.10, altitude: 0 },
     { name: 'Charlie', status: 'idle', battery: 80, latitude: 28.55, longitude: 77.30, altitude: 0 },
