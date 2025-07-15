@@ -7,7 +7,7 @@ const droneSchema = new mongoose.Schema({
   latitude: { type: Number, required: true },
   longitude: { type: Number, required: true },
   altitude: { type: Number, required: true },
-  currentMissionId: { type: mongoose.Schema.Types.ObjectId, ref: 'Mission', default: null },
+  currentMissionId: { type: mongoose.Schema.Types.ObjectId, ref: 'DroneMission', default: null },
 }, { timestamps: true });
 
 const Drone = mongoose.model('Drone', droneSchema);

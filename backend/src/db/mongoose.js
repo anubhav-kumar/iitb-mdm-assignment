@@ -1,7 +1,7 @@
 // src/db/mongoose.js
 import mongoose from 'mongoose';
 
-const connectDB = async () => {
+const connectDB = async() => {
   try {
     const mongoUri = process.env.MONGO_URI || 'mongodb://localhost:27017/express-drone-db';
     await mongoose.connect(mongoUri, {
