@@ -1,4 +1,6 @@
 import DroneMission from '../models/DroneMission';
+import Drone from '../models/Drone';
+import Mission from '../models/Mission';
 
 // Broadcast function
 function broadcastDroneTelemetry(wss, data) {
@@ -14,19 +16,24 @@ async function mockTelemetry(wss) {
   setInterval(async() => {
     const inProgressDroneIds = await DroneMission
       .find({ status: 'in-progress' })
-      .select('droneId -_id')
+      .select('droneId missionId id')
       .lean();
 
-    inProgressDroneIds.forEach((val) => {
+    inProgressDroneIds.forEach(async(val, index) => {
       const droneId = val.droneId;
+      const missionId = val.missionId;
+      const droneData = await Drone.find({ id: droneId });
+      const missionData = await Mission.find({ id: droneId });
       const telemetry = {
         type: 'dronedata',
         data: {
+          missionId: missionId,
+          droneName: droneData.name,
           droneId: droneId,
-          battery: 40 - Math.floor(Math.random() * 10),
-          latitude: 18.59 + Math.random() * 0.01,
-          longitude: 73.73 + Math.random() * 0.01,
-          altitude: 41 + Math.random() * 10,
+          battery: parseFloat((40 - Math.floor(Math.random() * 10).toFixed(2))),
+          latitude: parseFloat((18.59 + (index * 0.01) + Math.random() * 0.01).toFixed(2)),
+          longitude: parseFloat((73.73 + (index * 0.01) + Math.random() * 0.01).toFixed(2)),
+          altitude: parseFloat((41 + Math.random() * 10).toFixed(2)),
         },
       };
       broadcastDroneTelemetry(wss, telemetry);
@@ -42,14 +49,14 @@ async function mockTelemetry(wss) {
     broadcastDroneTelemetry(wss, {
       type: 'idledronecount',
       data: {
-        count: Math.floor(Math.random() * 10),
+        count: parseFloat((Math.floor(Math.random() * 10)).toFixed(2)),
       },
     });
 
     broadcastDroneTelemetry(wss, {
       type: 'chargingdronecount',
       data: {
-        count: Math.floor(Math.random() * 10),
+        count: parseFloat((Math.floor(Math.random() * 10)).toFixed(2)),
       },
     });
 

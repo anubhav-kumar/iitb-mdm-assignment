@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Table from "./Table";
 
 const columns = [
@@ -34,6 +34,9 @@ const columns = [
 
 const DroneMissionTable = (props: any) => {
   const { data } = props;
+  useEffect(() => {
+    console.log((data));
+  }, [data]);
   return <Table columns={columns} data={data} />;
 };
 

@@ -55,7 +55,6 @@ function App() {
 
   return (
     <>
-      <p>{JSON.stringify(websocketMessages)}</p>
       <StartMissionModal
         title="Start a Mission"
         isOpen={isSetMissionModalOpen}
