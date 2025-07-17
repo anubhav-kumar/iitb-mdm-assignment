@@ -7,6 +7,7 @@ import mockTelemetry from './sockets/mockTelemetry';
 import connectionHandling from './sockets/connectionHandling';
 import { WebSocketServer } from 'ws';
 import path from 'path';
+import cors from 'cors';
 
 dotenv.config();
 
@@ -18,6 +19,12 @@ app.use(express.json());
 
 // Connect MongoDB
 connectDB();
+
+app.use(cors({
+  origin: 'http://localhost:5173',
+  methods: ['GET', 'POST'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+}));
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));

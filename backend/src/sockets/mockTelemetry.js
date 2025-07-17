@@ -22,13 +22,14 @@ async function mockTelemetry(wss) {
     inProgressDroneIds.forEach(async(val, index) => {
       const droneId = val.droneId;
       const missionId = val.missionId;
-      const droneData = await Drone.find({ id: droneId });
-      const missionData = await Mission.find({ id: droneId });
+      const droneData = await Drone.find({ _id: droneId });
+      const missionData = await Mission.find({ _id: missionId });
       const telemetry = {
         type: 'dronedata',
         data: {
           missionId: missionId,
-          droneName: droneData.name,
+          missionName: missionData[0].name,
+          droneName: droneData[0].name,
           droneId: droneId,
           battery: parseFloat((40 - Math.floor(Math.random() * 10).toFixed(2))),
           latitude: parseFloat((18.59 + (index * 0.01) + Math.random() * 0.01).toFixed(2)),
