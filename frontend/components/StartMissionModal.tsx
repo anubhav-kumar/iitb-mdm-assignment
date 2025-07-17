@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "./Button";
 
 interface ModalProps {
@@ -7,16 +7,59 @@ interface ModalProps {
   title: string;
 }
 
+const getMissions = async() => {
+  const missionData = await fetch("http://localhost:3000/missions");
+  const missionJson = await missionData.json();
+  return missionJson.missions.map((dt) => {
+    return {
+      id: dt._id,
+      name: dt.name,
+    };
+  });
+};
+
+const getDrones = async() => {
+  const droneData = await fetch("http://localhost:3000/drones");
+  const droneJson = await droneData.json();
+  return droneJson.drones.map((dt) => {
+    return {
+      id: dt._id,
+      name: dt.name,
+    };
+  });
+};
+
+const onSubmit = async (selectedDrone, selectedMission) => {
+  await fetch("http://localhost:3000/start-mission", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      droneId: selectedDrone,
+      missionId: selectedMission,
+    }),
+  });
+};
+
 const StartMissionModal = (props: ModalProps) => {
   const { isOpen, onClose, title } = props;
-  const onSubmit = () => {
-    alert("On submit to be integrated");
-  };
+  const [missions, setMissions] = useState([]);
+  const [drones, setDrones] = useState([]);
   const [selectedMission, setSelectedMission] = useState("");
   const [selectedDrone, setSelectedDrone] = useState("");
+  useEffect(() => {
+    async function updateDropdowns() {
+      const [droneList, missionList] = await Promise.all([
+        getDrones(),
+        getMissions(),
+      ]);
+      setDrones(droneList);
+      setMissions(missionList);
+    }
+    updateDropdowns();
+  }, []);
   if (!isOpen) return null;
-  const missions = [{ id: "Some Id", name: "Some Name" }];
-  const drones = [{ id: "Some Id", name: "Some Name" }];
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
       <div className="bg-white rounded-xl shadow-xl w-full max-w-md p-6 relative">
@@ -72,9 +115,14 @@ const StartMissionModal = (props: ModalProps) => {
 
             <div className="flex justify-end">
               <div className="mr-1">
-                <Button label="Submit" variant="primary" onClick={onSubmit} />
+                <Button
+                  label="Submit"
+                  variant="primary"
+                  onClick={() => {
+                    onSubmit(selectedDrone, selectedMission);
+                  }}
+                />
               </div>
-
               <Button label="Close" variant="secondary" onClick={onClose} />
             </div>
           </form>

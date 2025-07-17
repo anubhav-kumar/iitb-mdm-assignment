@@ -2,9 +2,8 @@ import React, { useEffect } from "react";
 import Table from "./Table";
 
 const columns = [
-  { header: "ID", accessor: "id" },
-  { header: "Mission Name", accessor: "name" },
-  { header: "Drone ID", accessor: "droneId" },
+  { header: "Mission Name", accessor: "missionName" },
+  { header: "Drone Name", accessor: "droneId" },
   { header: "Latitude", accessor: "lat" },
   { header: "Longitude", accessor: "lng" },
   { header: "Altitude", accessor: "alt" },
@@ -34,9 +33,6 @@ const columns = [
 
 const DroneMissionTable = (props: any) => {
   const { data } = props;
-  useEffect(() => {
-    console.log((data));
-  }, [data]);
   return <Table columns={columns} data={data} />;
 };
 

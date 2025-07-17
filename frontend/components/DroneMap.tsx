@@ -33,7 +33,6 @@ function getAverageLatLng(drones: any) {
 
   const averageLat = totalLat / drones.length;
   const averageLng = totalLng / drones.length;
-  console.log([averageLng, averageLat]);
   return [averageLat, averageLng];
 }
 

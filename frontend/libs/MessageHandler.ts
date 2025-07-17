@@ -17,12 +17,11 @@ const MessageHandler = (message: any) => {
       setDroneStateCounters((prev) => ({ ...prev, charging: data.count }));
       break;
     case "dronedata":
-      console.log(`In handler: ${JSON.stringify(data)}`);
       setLiveMissionData((prevData) => {
         prevData[`drone-${data.droneId}`] = {
           id: data.missionId,
-          name: data.droneName,
-          droneId: data.droneId,
+          missionName: data.missionName,
+          droneId: data.droneName,
           lat: data.latitude,
           lng: data.longitude,
           alt: data.altitude,
