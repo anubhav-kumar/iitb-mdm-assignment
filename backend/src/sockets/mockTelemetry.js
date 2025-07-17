@@ -16,7 +16,6 @@ async function mockTelemetry(wss) {
   setInterval(async() => {
     const inProgressDroneIds = await DroneMission
       .find({ status: 'in-progress' })
-      .select('droneId missionId id')
       .lean();
 
     inProgressDroneIds.forEach(async(val, index) => {
@@ -27,10 +26,11 @@ async function mockTelemetry(wss) {
       const telemetry = {
         type: 'dronedata',
         data: {
-          missionId: missionId,
+          droneId: droneId,
+          droneMissionId: val._id,
+          droneMissionStatus: val.status,
           missionName: missionData[0].name,
           droneName: droneData[0].name,
-          droneId: droneId,
           battery: parseFloat((40 - Math.floor(Math.random() * 10).toFixed(2))),
           latitude: parseFloat((18.59 + (index * 0.01) + Math.random() * 0.01).toFixed(2)),
           longitude: parseFloat((73.73 + (index * 0.01) + Math.random() * 0.01).toFixed(2)),

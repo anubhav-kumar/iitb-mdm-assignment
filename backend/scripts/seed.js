@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import Drone from '../src/models/Drone.js';
 import Mission from '../src/models/Mission.js';
 import connectDB from '../src/db/mongoose.js';
+import DroneMission from '../src/models/DroneMission.js';
 
 dotenv.config();
 
@@ -18,6 +19,7 @@ const seed = async() => {
   console.log('🔥 Clearing existing data...');
   await Drone.deleteMany({});
   await Mission.deleteMany({});
+  await DroneMission.deleteMany({});
 
   console.log('🚁 Creating drones...');
   await Drone.insertMany([
