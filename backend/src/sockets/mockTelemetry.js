@@ -10,7 +10,6 @@ function broadcastDroneTelemetry(wss, data) {
   });
 }
 
-
 async function mockTelemetry(wss) {
   setInterval(async() => {
     const inProgressDroneIds = await DroneMission
@@ -18,19 +17,42 @@ async function mockTelemetry(wss) {
       .select('droneId -_id')
       .lean();
 
-    console.log('In progress done Ids: ' + JSON.stringify(inProgressDroneIds));
     inProgressDroneIds.forEach((val) => {
       const droneId = val.droneId;
       const telemetry = {
-        droneId: droneId,
-        battery: 40 - Math.floor(Math.random() * 10),
-        latitude: 18.59 + Math.random() * 0.01,
-        longitude: 73.73 + Math.random() * 0.01,
-        altitude: 41 + Math.random() * 10,
+        type: 'dronedata',
+        data: {
+          droneId: droneId,
+          battery: 40 - Math.floor(Math.random() * 10),
+          latitude: 18.59 + Math.random() * 0.01,
+          longitude: 73.73 + Math.random() * 0.01,
+          altitude: 41 + Math.random() * 10,
+        },
       };
       broadcastDroneTelemetry(wss, telemetry);
     });
 
-  }, 20000);
+    broadcastDroneTelemetry(wss, {
+      type: 'livemissioncount',
+      data: {
+        count: inProgressDroneIds.length,
+      },
+    });
+
+    broadcastDroneTelemetry(wss, {
+      type: 'idledronecount',
+      data: {
+        count: Math.floor(Math.random() * 10),
+      },
+    });
+
+    broadcastDroneTelemetry(wss, {
+      type: 'chargingdronecount',
+      data: {
+        count: Math.floor(Math.random() * 10),
+      },
+    });
+
+  }, 2000);
 }
 export default mockTelemetry;
