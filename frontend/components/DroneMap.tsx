@@ -48,7 +48,7 @@ const DroneMap = (props: any) => {
       <h3 className="text-xl font-semibold text-gray-800 mb-3">
         Mission Live Location
       </h3>
-      <Map drones={drones} center={center} zoom={12} />
+      <Map drones={drones} center={center} zoom={13} />
     </div>
   );
 };

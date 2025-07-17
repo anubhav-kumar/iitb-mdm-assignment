@@ -1,5 +1,5 @@
-import React from "react";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import React, { useEffect } from "react";
+import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import L from "leaflet";
 
 interface Drone {
@@ -23,6 +23,22 @@ const blueDotIcon = new L.DivIcon({
   iconAnchor: [7, 7],
 });
 
+function ChangeMapView({
+  center,
+  zoom,
+}: {
+  center: [number, number];
+  zoom: number;
+}) {
+  const map = useMap();
+
+  useEffect(() => {
+    map.flyTo(center, zoom);
+  }, [center, zoom, map]);
+
+  return null;
+}
+
 const Map = (props: MapProps) => {
   const { drones, center, zoom } = props;
   return (
@@ -37,6 +53,7 @@ const Map = (props: MapProps) => {
           attribution='© <a href="https://www.openstreetmap.org/">OpenStreetMap</a>'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
+        <ChangeMapView center={center} zoom={zoom} />
         {drones.map((drone) => (
           <Marker
             key={drone.id}
