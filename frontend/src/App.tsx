@@ -61,6 +61,7 @@ function App() {
         onClose={() => {
           setSetMissionModalOpen(false);
         }}
+        setIsOpen={setSetMissionModalOpen}
       />
       <div className="flex gap-6 items-start">
         <StatusCard

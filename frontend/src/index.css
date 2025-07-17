@@ -1,1 +1,4 @@
 @import "tailwindcss";
+.z-500 {
+    z-index: 500
+}

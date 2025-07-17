@@ -5,6 +5,7 @@ interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   title: string;
+  setIsOpen: () => any;
 }
 
 const getMissions = async() => {
@@ -29,8 +30,8 @@ const getDrones = async() => {
   });
 };
 
-const onSubmit = async (selectedDrone, selectedMission) => {
-  await fetch("http://localhost:3000/start-mission", {
+const onSubmit = async (selectedDrone, selectedMission, setIsOpen) => {
+  const resp = await fetch("http://localhost:3000/start-mission", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -40,10 +41,13 @@ const onSubmit = async (selectedDrone, selectedMission) => {
       missionId: selectedMission,
     }),
   });
+  if (resp.ok) {
+    setIsOpen(false);
+  }
 };
 
 const StartMissionModal = (props: ModalProps) => {
-  const { isOpen, onClose, title } = props;
+  const { isOpen, onClose, title, setIsOpen } = props;
   const [missions, setMissions] = useState([]);
   const [drones, setDrones] = useState([]);
   const [selectedMission, setSelectedMission] = useState("");
@@ -61,7 +65,7 @@ const StartMissionModal = (props: ModalProps) => {
   }, []);
   if (!isOpen) return null;
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+    <div className="fixed inset-0 z-500 flex items-center justify-center bg-black/50">
       <div className="bg-white rounded-xl shadow-xl w-full max-w-md p-6 relative">
         <h2 className="text-xl font-semibold text-gray-800 mb-4">{title}</h2>
         <button
@@ -119,7 +123,7 @@ const StartMissionModal = (props: ModalProps) => {
                   label="Submit"
                   variant="primary"
                   onClick={() => {
-                    onSubmit(selectedDrone, selectedMission);
+                    onSubmit(selectedDrone, selectedMission, setIsOpen);
                   }}
                 />
               </div>

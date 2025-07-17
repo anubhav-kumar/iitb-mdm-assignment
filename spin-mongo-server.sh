@@ -7,6 +7,7 @@ set container_name mongo-drone
 set host_port 27017
 set container_port 27017
 
+mkdir -p (pwd)/mongodb-setup/mongo-data
 # Optional: path for persistent data
 set mongo_data_path (pwd)/mongodb-setup/mongo-data
 
