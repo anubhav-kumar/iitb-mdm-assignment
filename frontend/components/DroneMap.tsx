@@ -1,22 +1,5 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Map from "./Map";
-
-const drones = [
-  {
-    id: "dr1",
-    name: "Survey Area A",
-    lat: 28.6,
-    lng: 77.2,
-    battery: "85%",
-  },
-  {
-    id: "dr2",
-    name: "Bridge Inspection",
-    lat: 28.61,
-    lng: 77.21,
-    battery: "65%",
-  },
-];
 
 function getAverageLatLng(drones: any) {
   if (!drones || drones.length === 0) {

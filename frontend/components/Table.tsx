@@ -10,6 +10,17 @@ interface TableProps {
   data: Record<string, any>[];
 }
 
+const markMissionAsComplete = async (missionId: number) => {
+  await fetch("http://localhost:3000/complete-mission", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      droneMissionId: missionId,
+    }),
+  });
+};
 const Table = (props: TableProps) => {
   const { columns, data } = props;
   return (
@@ -17,7 +28,6 @@ const Table = (props: TableProps) => {
       <h3 className="text-xl font-semibold text-gray-800 mb-3">
         Live Drone Missions
       </h3>
-      <div className="italic text-sm text-gray-500 mb-3">Filters</div>
       <div className="overflow-x-auto">
         <table className="min-w-full text-sm text-left text-gray-600">
           <thead className="text-xs text-gray-700 uppercase bg-gray-100">
@@ -41,7 +51,12 @@ const Table = (props: TableProps) => {
                   </>
                 ))}
                 <td>
-                  <Button label="Mark complete" />
+                  <Button
+                    label="Mark complete"
+                    onClick={() => {
+                      markMissionAsComplete(row.droneMissionId);
+                    }}
+                  />
                 </td>
               </tr>
             ))}

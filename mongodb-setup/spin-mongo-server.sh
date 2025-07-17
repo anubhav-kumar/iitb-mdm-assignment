@@ -8,7 +8,7 @@ set host_port 27017
 set container_port 27017
 
 # Optional: path for persistent data
-set mongo_data_path (pwd)/mongo-data
+set mongo_data_path (pwd)/mongodb-setup/mongo-data
 
 # Create volume dir if it doesn't exist
 if not test -d $mongo_data_path

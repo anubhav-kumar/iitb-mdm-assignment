@@ -19,12 +19,13 @@ const MessageHandler = (message: any) => {
     case "dronedata":
       setLiveMissionData((prevData) => {
         prevData[`drone-${data.droneId}`] = {
-          id: data.missionId,
+          droneMissionId: data.droneMissionId,
+          droneMissionStatus: data.droneMissionStatus,
           missionName: data.missionName,
-          droneId: data.droneName,
-          lat: data.latitude,
-          lng: data.longitude,
-          alt: data.altitude,
+          droneName: data.droneName,
+          latitude: data.latitude,
+          longitude: data.longitude,
+          altitude: data.altitude,
           battery: `${data.battery} %`,
         };
         return prevData;
